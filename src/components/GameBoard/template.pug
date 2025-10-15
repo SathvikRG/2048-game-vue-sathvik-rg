@@ -1,0 +1,21 @@
+v-card(elevation="3")
+  v-card-text.pa-6
+    .game-board-container
+      .game-board(
+        :style=`{ 
+          gridTemplateColumns: \`repeat(\${boardSize}, 1fr)\`,
+          gridTemplateRows: \`repeat(\${boardSize}, 1fr)\`,
+          gap: \`\${gap}px\`
+        }`
+      )
+        .game-cell.background-cell(
+          v-for="i in boardSize * boardSize"
+          :key=`\`bg-\${i}\``
+        )
+        
+        GameTile(
+          v-for="tile in tiles"
+          :key=`\`tile-\${tile.id}\``
+          :tile="tile"
+          :board-size="boardSize"
+        )

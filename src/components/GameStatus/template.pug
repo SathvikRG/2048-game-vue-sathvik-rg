@@ -1,0 +1,84 @@
+.game-status
+  v-alert(
+    v-if="gameStatus === 'won'"
+    type="success"
+    variant="tonal"
+    class="mb-4"
+    prominent
+  )
+    template(v-slot:title)
+      .d-flex.align-center
+        v-icon.mr-2 mdi-trophy
+        | Congratulations!
+    .text-body-1
+      | You reached 
+      strong 2048
+      | !
+      br
+      span.text-body-2 You can continue playing to reach higher scores.
+    template(v-slot:actions)
+      v-btn(
+        color="success"
+        @click="continueGame"
+        class="mr-2"
+      ) Continue Playing
+      v-btn(
+        color="primary"
+        variant="outlined"
+        @click="restartGame"
+      ) New Game
+
+  v-alert(
+    v-if="gameStatus === 'gameOver'"
+    type="error"
+    variant="tonal"
+    class="mb-4"
+    prominent
+  )
+    template(v-slot:title)
+      .d-flex.align-center
+        v-icon.mr-2 mdi-gamepad-variant
+        | Game Over!
+    .text-body-1
+      | No more moves available.
+      br
+      span.text-body-2 Final Score: 
+        strong {{ score.toLocaleString() }}
+    template(v-slot:actions)
+      v-btn(
+        color="primary"
+        @click="restartGame"
+      ) Try Again
+
+  v-card(v-if="showStats" class="mb-4" elevation="1")
+    v-card-title.text-h6.pa-4.pb-2
+      v-icon.mr-2 mdi-chart-line
+      | Game Statistics
+    v-card-text.pa-4.pt-0
+      v-row.text-center
+        v-col(cols="6" sm="3" class="pa-2")
+          v-card(variant="outlined" class="pa-3 stat-card")
+            .stat-value {{ moveCount }}
+            .stat-label Moves
+        v-col(cols="6" sm="3" class="pa-2")
+          v-card(variant="outlined" class="pa-3 stat-card")
+            .stat-value {{ highestTile }}
+            .stat-label Highest Tile
+        v-col(cols="6" sm="3" class="pa-2")
+          v-card(variant="outlined" class="pa-3 stat-card")
+            .stat-value {{ totalScore.toLocaleString() }}
+            .stat-label Total Score
+        v-col(cols="6" sm="3" class="pa-2")
+          v-card(variant="outlined" class="pa-3 stat-card")
+            .stat-value {{ efficiency }}%
+            .stat-label Efficiency
+
+  v-btn(
+    color="grey"
+    variant="text"
+    size="small"
+    @click="toggleStats"
+    class="mb-4"
+  )
+    v-icon(left) {{ showStats ? 'mdi-chevron-up' : 'mdi-chevron-down' }}
+    | {{ showStats ? 'Hide' : 'Show' }} Statistics

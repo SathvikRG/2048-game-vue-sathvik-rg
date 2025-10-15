@@ -1,0 +1,93 @@
+v-dialog(
+  v-model="dialog"
+  max-width="500"
+  persistent
+)
+  v-card
+    v-card-title.text-h5.pa-4
+      v-icon.mr-2 mdi-cog
+      | Game Settings
+    
+    v-card-text.pa-4
+      .setting-section.mb-6
+        h3.text-h6.mb-3 Board Size
+        v-radio-group(
+          v-model="selectedBoardSize"
+          inline
+          class="mt-0"
+        )
+          v-radio(
+            v-for="size in boardSizes"
+            :key="size"
+            :value="size"
+            :label=`\`\${size}x\${size}\``
+            color="primary"
+          )
+        p.text-body-2.text-medium-emphasis.mt-2
+          | Larger boards are more challenging but offer higher scores.
+
+      .setting-section.mb-6
+        h3.text-h6.mb-3 Theme
+        v-radio-group(
+          v-model="selectedTheme"
+          inline
+          class="mt-0"
+        )
+          v-radio(
+            value="light"
+            label="Light"
+            color="primary"
+          )
+          v-radio(
+            value="dark"
+            label="Dark"
+            color="primary"
+          )
+
+      .setting-section.mb-6
+        h3.text-h6.mb-3 Game Options
+        v-switch(
+          v-model="autoSave"
+          label="Auto-save game progress"
+          color="primary"
+          hide-details
+          class="mb-2"
+        )
+        v-switch(
+          v-model="showAnimations"
+          label="Enable tile animations"
+          color="primary"
+          hide-details
+          class="mb-2"
+        )
+
+      .setting-section
+        h3.text-h6.mb-3 Reset Options
+        v-btn(
+          color="warning"
+          variant="outlined"
+          @click="resetBestScore"
+          class="mr-2 mb-2"
+        )
+          v-icon(left) mdi-trophy-remove
+          | Reset Best Score
+        v-btn(
+          color="error"
+          variant="outlined"
+          @click="clearAllData"
+          class="mb-2"
+        )
+          v-icon(left) mdi-delete
+          | Clear All Data
+
+    v-card-actions.pa-4
+      v-spacer
+      v-btn(
+        color="grey"
+        variant="text"
+        @click="cancel"
+      ) Cancel
+      v-btn(
+        color="primary"
+        @click="saveSettings"
+      ) Save Settings

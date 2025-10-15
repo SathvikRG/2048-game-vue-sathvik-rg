@@ -1,0 +1,92 @@
+v-dialog(
+  v-model="showDialog"
+  max-width="400"
+  persistent
+  :retain-focus="false"
+)
+  v-card
+    v-card-title.text-center.pa-6.pb-4
+      .dialog-header
+        v-icon(
+          :color="gameStatus === 'won' ? 'success' : 'error'"
+          size="48"
+          class="mb-2"
+        ) {{ gameStatus === 'won' ? 'mdi-trophy' : 'mdi-gamepad-variant' }}
+        h2.text-h4.font-weight-bold {{ gameStatus === 'won' ? 'You Won!' : 'Game Over!' }}
+    
+    v-card-text.text-center.pa-4
+      div(v-if="gameStatus === 'won'" class="mb-4")
+        p.text-h6.text-success.mb-2
+          | Congratulations! You reached 
+          strong 2048
+          | !
+        p.text-body-2.text-medium-emphasis You can continue playing to achieve even higher scores.
+      
+      div(v-else class="mb-4")
+        p.text-h6.text-error.mb-2 No more moves available!
+        p.text-body-2.text-medium-emphasis Better luck next time!
+      
+      v-card(
+        variant="tonal"
+        class="mb-4"
+        :color="gameStatus === 'won' ? 'success' : 'error'"
+      )
+        v-card-text.pa-3
+          v-row
+            v-col(cols="6")
+              .score-item
+                .score-label Final Score
+                .score-value {{ score.toLocaleString() }}
+            v-col(cols="6")
+              .score-item
+                .score-label Best Score
+                .score-value {{ bestScore.toLocaleString() }}
+          v-row(v-if="isNewBest")
+            v-col(cols="12")
+              v-chip(color="success" size="small" class="mt-2")
+                v-icon(left size="small") mdi-star
+                | New Best Score!
+      
+      .game-stats.mb-4
+        v-row
+          v-col(cols="4")
+            .stat-item
+              .stat-value {{ moveCount }}
+              .stat-label Moves
+          v-col(cols="4")
+            .stat-item
+              .stat-value {{ highestTile }}
+              .stat-label Highest
+          v-col(cols="4")
+            .stat-item
+              .stat-value {{ efficiency }}%
+              .stat-label Efficiency
+    
+    v-card-actions.pa-4.pt-0
+      v-row
+        v-col(cols="12" v-if="gameStatus === 'won'")
+          v-btn(
+            color="success"
+            size="large"
+            block
+            @click="continueGame"
+            class="mb-2"
+          )
+            v-icon(left) mdi-play
+            | Continue Playing
+        v-col(cols="12" :sm="gameStatus === 'won' ? 6 : 12")
+          v-btn(
+            color="primary"
+            size="large"
+            :block="gameStatus !== 'won'"
+            @click="restartGame"
+          )
+            v-icon(left) mdi-refresh
+            | New Game
+        v-col(cols="12" sm="6" v-if="gameStatus === 'won'")
+          v-btn(
+            color="grey"
+            size="large"
+            block
+            @click="closeDialog"
+          ) Close

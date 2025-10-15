@@ -1,0 +1,8 @@
+.game-tile(
+  :class=`[
+    \`tile-\${tile.value}\`,
+    { 'tile-new': isNew, 'tile-merged': isMerged }
+  ]`
+  :style="tileStyle"
+)
+  span.tile-value {{ tile.value }}

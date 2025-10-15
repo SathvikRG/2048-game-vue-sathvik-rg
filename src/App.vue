@@ -57,12 +57,12 @@
 
 <script>
 import { useGameStore } from './stores/gameStore'
-import GameHeader from './components/GameHeader.vue'
-import GameBoard from './components/GameBoard.vue'
-import GameControls from './components/GameControls.vue'
-import GameStatus from './components/GameStatus.vue'
-import SettingsDialog from './components/SettingsDialog.vue'
-import GameOverDialog from './components/GameOverDialog.vue'
+import GameHeader from './components/GameHeader/index.vue'
+import GameBoard from './components/GameBoard/index.vue'
+import GameControls from './components/GameControls/index.vue'
+import GameStatus from './components/GameStatus/index.vue'
+import SettingsDialog from './components/SettingsDialog/index.vue'
+import GameOverDialog from './components/GameOverDialog/index.vue'
 
 export default {
   name: 'App',

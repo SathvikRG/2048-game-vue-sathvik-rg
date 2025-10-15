@@ -4,7 +4,15 @@ import vuetify from 'vite-plugin-vuetify'
 
 export default defineConfig({
   plugins: [
-    vue(),
+    vue({
+      template: {
+        preprocessOptions: {
+          pug: {
+            // Pug options
+          }
+        }
+      }
+    }),
     vuetify({ autoImport: true })
   ],
   server: {

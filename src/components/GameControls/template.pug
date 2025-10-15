@@ -1,0 +1,51 @@
+v-card(elevation="3")
+  v-card-text.pa-6
+    v-row(justify="center" align="center")
+      v-col(cols="12" sm="6" md="4")
+        v-btn(
+          color="primary"
+          size="x-large"
+          block
+          @click="restartGame"
+          class="mb-4"
+          rounded="lg"
+        )
+          v-icon(left) mdi-refresh
+          | New Game
+      
+      v-col(cols="12" sm="6" md="4")
+        v-btn(
+          color="secondary"
+          size="x-large"
+          block
+          disabled
+          class="mb-4"
+          rounded="lg"
+        )
+          v-icon(left) mdi-undo
+          | Undo
+      
+      v-col(cols="12" class="text-center")
+        .control-instructions
+          v-icon.mr-2(size="small") mdi-keyboard
+          span.text-body-1
+            | Use 
+            strong Arrow Keys
+            |  or 
+            strong WASD
+            |  to move tiles
+    
+    v-row(v-if="isMobile" class="mt-6" justify="center")
+      v-col(cols="12")
+        .touch-controls
+          v-btn(
+            v-for="direction in directions"
+            :key="direction.name"
+            :color="direction.color"
+            size="large"
+            @click="makeMove(direction.name)"
+            :disabled="gameStatus !== 'playing'"
+            class="control-btn"
+            rounded="lg"
+          )
+            v-icon {{ direction.icon }}

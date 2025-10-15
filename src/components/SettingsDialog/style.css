@@ -1,0 +1,33 @@
+.setting-section {
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 16px;
+}
+
+.setting-section:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.v-radio-group {
+  margin-top: 0;
+}
+
+.v-switch {
+  margin-bottom: 8px;
+}
+
+/* Custom radio button styling */
+:deep(.v-radio .v-selection-control__input) {
+  margin-right: 12px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .v-card-title {
+    font-size: 1.25rem;
+  }
+  
+  .setting-section h3 {
+    font-size: 1.1rem;
+  }
+}
