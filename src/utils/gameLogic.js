@@ -106,7 +106,7 @@ export const slideRow = (row) => {
   while (merged.length < row.length) {
     merged.push(0)
   }
-  
+
   return { row: merged, score }
 }
 
@@ -117,51 +117,67 @@ export const slideRow = (row) => {
  * @returns {Object} {board: Array<Array<number>>, score: number, moved: boolean}
  */
 export const slideBoard = (board, direction) => {
-  let rotatedBoard = board
-  let rotations = 0
-  
-  // Rotate board to make all directions work as "left"
-  switch (direction) {
-    case 'up':
-      rotatedBoard = rotateBoard(board)
-      rotations = 3
-      break
-    case 'down':
-      rotatedBoard = rotateBoard(rotateBoard(rotateBoard(board)))
-      rotations = 1
-      break
-    case 'right':
-      rotatedBoard = rotateBoard(rotateBoard(board))
-      rotations = 2
-      break
-    case 'left':
-    default:
-      rotatedBoard = board
-      rotations = 0
-      break
-  }
-  
-  // Slide all rows
-  let newBoard = []
+  const size = board.length
+  let newBoard = Array(size).fill(null).map(() => Array(size).fill(0))
   let totalScore = 0
   let moved = false
-  
-  for (let i = 0; i < rotatedBoard.length; i++) {
-    const result = slideRow(rotatedBoard[i])
-    newBoard.push(result.row)
-    totalScore += result.score
-    
-    // Check if this row moved
-    if (JSON.stringify(rotatedBoard[i]) !== JSON.stringify(result.row)) {
-      moved = true
-    }
+
+  switch (direction) {
+    case 'left':
+      for (let row = 0; row < size; row++) {
+        const result = slideRow(board[row])
+        newBoard[row] = result.row
+        totalScore += result.score
+        if (JSON.stringify(board[row]) !== JSON.stringify(result.row)) {
+          moved = true
+        }
+      }
+      break
+
+    case 'right':
+      for (let row = 0; row < size; row++) {
+        const reversedRow = [...board[row]].reverse()
+        const result = slideRow(reversedRow)
+        newBoard[row] = result.row.reverse()
+        totalScore += result.score
+        if (JSON.stringify(board[row]) !== JSON.stringify(newBoard[row])) {
+          moved = true
+        }
+      }
+      break
+
+    case 'up':
+      for (let col = 0; col < size; col++) {
+        const column = board.map(row => row[col])
+        const result = slideRow(column)
+        for (let row = 0; row < size; row++) {
+          newBoard[row][col] = result.row[row]
+        }
+        totalScore += result.score
+        if (JSON.stringify(column) !== JSON.stringify(result.row)) {
+          moved = true
+        }
+      }
+      break
+
+    case 'down':
+      for (let col = 0; col < size; col++) {
+        const column = board.map(row => row[col]).reverse()
+        const result = slideRow(column)
+        const reversedResult = result.row.reverse()
+        for (let row = 0; row < size; row++) {
+          newBoard[row][col] = reversedResult[row]
+        }
+        totalScore += result.score
+        const originalColumn = board.map(row => row[col])
+        const newColumn = newBoard.map(row => row[col])
+        if (JSON.stringify(originalColumn) !== JSON.stringify(newColumn)) {
+          moved = true
+        }
+      }
+      break
   }
-  
-  // Rotate back to original orientation
-  for (let i = 0; i < rotations; i++) {
-    newBoard = rotateBoard(newBoard)
-  }
-  
+
   return { board: newBoard, score: totalScore, moved }
 }
 
@@ -184,24 +200,24 @@ export const isGameOver = (board) => {
   if (getEmptyPositions(board).length > 0) {
     return false
   }
-  
+
   // Check if any adjacent cells can merge
   for (let row = 0; row < board.length; row++) {
     for (let col = 0; col < board[row].length; col++) {
       const current = board[row][col]
-      
+
       // Check right neighbor
       if (col < board[row].length - 1 && board[row][col + 1] === current) {
         return false
       }
-      
+
       // Check bottom neighbor
       if (row < board.length - 1 && board[row + 1][col] === current) {
         return false
       }
     }
   }
-  
+
   return true
 }
 
