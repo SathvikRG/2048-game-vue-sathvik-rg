@@ -45,10 +45,10 @@ export const addRandomTile = (board) => {
   if (emptyPositions.length === 0) return board
 
   const randomPosition = emptyPositions[Math.floor(Math.random() * emptyPositions.length)]
-  const newValue = Math.random() < 0.9 ? 2 : 4 // 90% chance for 2, 10% for 4
-  
-  return board.map((row, rowIndex) => 
-    row.map((cell, colIndex) => 
+  const newValue = Math.random() < 0.8 ? 2 : 4 // 80% chance for 2, 20% for 4
+
+  return board.map((row, rowIndex) =>
+    row.map((cell, colIndex) =>
       rowIndex === randomPosition.row && colIndex === randomPosition.col ? newValue : cell
     )
   )
@@ -86,11 +86,11 @@ export const rotateBoard = (board) => {
 export const slideRow = (row) => {
   // Remove zeros
   const filtered = row.filter(cell => cell !== 0)
-  
+
   // Merge adjacent equal tiles
   const merged = []
   let score = 0
-  
+
   for (let i = 0; i < filtered.length; i++) {
     if (i < filtered.length - 1 && filtered[i] === filtered[i + 1]) {
       const mergedValue = filtered[i] * 2
@@ -101,7 +101,7 @@ export const slideRow = (row) => {
       merged.push(filtered[i])
     }
   }
-  
+
   // Pad with zeros
   while (merged.length < row.length) {
     merged.push(0)

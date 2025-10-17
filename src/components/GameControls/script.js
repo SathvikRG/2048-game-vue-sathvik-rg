@@ -1,3 +1,4 @@
+import { mapState, mapActions } from 'pinia'
 import { useGameStore } from '../../stores/gameStore'
 
 export default {
@@ -13,29 +14,14 @@ export default {
       ]
     }
   },
-  setup() {
-    const gameStore = useGameStore()
-    return {
-      gameStore
-    }
-  },
   computed: {
-    gameStatus() {
-      return this.gameStore.gameStatus
-    }
+    ...mapState(useGameStore, ['gameStatus'])
   },
   methods: {
-    resetGame() {
-      this.gameStore.resetGame()
-    },
-    makeMove(direction) {
-      this.gameStore.makeMove(direction)
-    },
-    
+    ...mapActions(useGameStore, ['resetGame', 'makeMove']),
     restartGame() {
       this.resetGame()
     },
-    
     checkMobile() {
       this.isMobile = window.innerWidth <= 768
     }

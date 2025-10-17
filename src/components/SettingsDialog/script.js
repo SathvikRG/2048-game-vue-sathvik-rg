@@ -1,3 +1,4 @@
+import { mapState, mapActions } from 'pinia'
 import { useGameStore } from '../../stores/gameStore'
 
 export default {
@@ -18,16 +19,8 @@ export default {
       boardSizes: [3, 4, 5, 6]
     }
   },
-  setup() {
-    const gameStore = useGameStore()
-    return {
-      gameStore
-    }
-  },
   computed: {
-    boardSize() {
-      return this.gameStore.boardSize
-    },
+    ...mapState(useGameStore, ['boardSize']),
     
     dialog: {
       get() {
@@ -46,12 +39,7 @@ export default {
     }
   },
   methods: {
-    resetGame(size) {
-      this.gameStore.resetGame(size)
-    },
-    clearSavedGame() {
-      this.gameStore.clearSavedGame()
-    },
+    ...mapActions(useGameStore, ['resetGame', 'clearSavedGame']),
     
     loadCurrentSettings() {
       this.selectedBoardSize = this.boardSize
@@ -85,7 +73,8 @@ export default {
     resetBestScore() {
       if (confirm('Are you sure you want to reset your best score?')) {
         localStorage.removeItem('2048-best-score')
-        this.$store.commit('resetBestScore')
+        const gameStore = useGameStore()
+        gameStore.bestScore = 0
       }
     },
     

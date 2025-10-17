@@ -1,3 +1,4 @@
+import { mapState, mapActions } from 'pinia'
 import { useGameStore } from '../../stores/gameStore'
 
 export default {
@@ -7,46 +8,18 @@ export default {
       showStats: false
     }
   },
-  setup() {
-    const gameStore = useGameStore()
-    return {
-      gameStore
-    }
-  },
   computed: {
-    gameStatus() {
-      return this.gameStore.gameStatus
-    },
-    score() {
-      return this.gameStore.score
-    },
-    moveCount() {
-      return this.gameStore.moveCount
-    },
-    highestTile() {
-      return this.gameStore.highestTile
-    },
-    totalScore() {
-      return this.gameStore.totalScore
-    },
-    
+    ...mapState(useGameStore, ['gameStatus', 'score', 'moveCount', 'highestTile', 'totalScore']),
     efficiency() {
       if (this.moveCount === 0) return 0
       return Math.round((this.score / this.moveCount) * 100) / 100
     }
   },
   methods: {
-    continueGame() {
-      this.gameStore.continueGame()
-    },
-    resetGame() {
-      this.gameStore.resetGame()
-    },
-    
+    ...mapActions(useGameStore, ['continueGame', 'resetGame']),
     restartGame() {
       this.resetGame()
     },
-    
     toggleStats() {
       this.showStats = !this.showStats
     }

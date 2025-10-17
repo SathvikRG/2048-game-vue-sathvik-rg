@@ -56,6 +56,7 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'pinia'
 import { useGameStore } from './stores/gameStore'
 import GameHeader from './components/GameHeader/index.vue'
 import GameBoard from './components/GameBoard/index.vue'
@@ -81,39 +82,18 @@ export default {
       autoSaveInterval: null
     }
   },
-  setup() {
-    const gameStore = useGameStore()
-    return {
-      gameStore
-    }
-  },
   computed: {
-    gameStatus() {
-      return this.gameStore.gameStatus
-    }
+    ...mapState(useGameStore, ['gameStatus'])
   },
   methods: {
-    loadGame() {
-      return this.gameStore.loadGame()
-    },
-    resetGame() {
-      this.gameStore.resetGame()
-    },
-    saveGame() {
-      this.gameStore.saveGame()
-    },
-    makeMove(direction) {
-      this.gameStore.makeMove(direction)
-    },
-    
+    ...mapActions(useGameStore, ['loadGame', 'resetGame', 'saveGame', 'makeMove', 'loadBestScore']),
+
     toggleTheme() {
       this.isDark = !this.isDark
       this.$vuetify.theme.global.name = this.isDark ? 'dark' : 'light'
     },
-    
     handleKeyPress(event) {
       if (this.gameStatus !== 'playing') return
-      
       const keyMap = {
         'ArrowUp': 'up',
         'ArrowDown': 'down',
@@ -124,7 +104,6 @@ export default {
         'a': 'left',
         'd': 'right'
       }
-      
       const direction = keyMap[event.key]
       if (direction) {
         event.preventDefault()
@@ -133,14 +112,17 @@ export default {
     }
   },
   mounted() {
+    // Load best score from localStorage
+    this.loadBestScore()
+
     // Try to load saved game
     if (!this.loadGame()) {
       this.resetGame()
     }
-    
+
     // Add keyboard listeners
     window.addEventListener('keydown', this.handleKeyPress)
-    
+
     // Auto-save game every 30 seconds
     this.autoSaveInterval = setInterval(() => {
       if (this.gameStatus === 'playing') {

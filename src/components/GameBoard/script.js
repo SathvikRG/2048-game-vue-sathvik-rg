@@ -1,3 +1,4 @@
+import { mapState } from 'pinia'
 import { useGameStore } from '../../stores/gameStore'
 import GameTile from '../GameTile/index.vue'
 
@@ -6,29 +7,17 @@ export default {
   components: {
     GameTile
   },
-  setup() {
-    const gameStore = useGameStore()
+  data() {
     return {
-      gameStore
+      gap: 10
     }
   },
   computed: {
-    board() {
-      return this.gameStore.board
-    },
-    boardSize() {
-      return this.gameStore.boardSize
-    },
-    
-    gap() {
-      return 10
-    },
-    
+    ...mapState(useGameStore, ['board', 'boardSize']),
     // Convert board to tiles with positions
     tiles() {
       const tiles = []
       let id = 0
-      
       for (let row = 0; row < this.boardSize; row++) {
         for (let col = 0; col < this.boardSize; col++) {
           const value = this.board[row][col]
@@ -44,7 +33,6 @@ export default {
           }
         }
       }
-      
       return tiles
     }
   }
