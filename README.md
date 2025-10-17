@@ -1,4 +1,5 @@
-# 2048 Game - Vue.js + Vuetify
+# 2048 Game - Sathvik R G
+# sathvikrg28@gmail.com
 
 A modern implementation of the popular 2048 puzzle game built with Vue 3, Vuetify 3, and Pinia for state management. Features a beautiful Material Design interface with smooth animations and responsive design.
 
@@ -18,14 +19,14 @@ A modern implementation of the popular 2048 puzzle game built with Vue 3, Vuetif
 
 ### Prerequisites
 
-- Node.js (version 16 or higher)
+- Node.js (version 22 or higher)
 - npm or yarn
 
 ### Installation
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/SathvikRG/2048-game-vue-sathvik-rg
    cd 2048-game-vue
    ```
 
@@ -71,14 +72,18 @@ npm run preview
 ### Project Structure
 ```
 src/
-├── components/          # Vue components
-│   ├── GameBoard.vue   # Main game board
-│   ├── GameTile.vue    # Individual tile component
-│   ├── GameHeader.vue  # Score and title display
-│   ├── GameControls.vue # Game control buttons
-│   ├── GameStatus.vue  # Game status and statistics
-│   ├── SettingsDialog.vue # Settings modal
-│   └── GameOverDialog.vue # Game over modal
+├── components/          # Vue components (modular structure)
+│   ├── GameBoard/      # Main game board component
+│   │   ├── index.vue   # Component entry point
+│   │   ├── template.pug # Pug template
+│   │   ├── script.js   # Component logic
+│   │   └── style.css   # Component styles
+│   ├── GameTile/       # Individual tile component
+│   ├── GameHeader/     # Score and title display
+│   ├── GameControls/   # Game control buttons
+│   ├── GameStatus/     # Game status and statistics
+│   ├── SettingsDialog/ # Settings modal
+│   └── GameOverDialog/ # Game over modal
 ├── stores/             # Pinia stores
 │   └── gameStore.js    # Game state management
 ├── utils/              # Utility functions
